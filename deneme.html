@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesli Komut</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Sesli Komut Uygulaması</h1>
+        <button id="toggleSoundButton" class="btn btn-primary">Sesi Aç</button>
+        <button id="ledButton" class="btn btn-secondary">Aç</button>
+        <button id="doorButton" class="btn btn-secondary">Aç</button>
+        <button id="temperatureButton" class="btn btn-info">Sıcaklığı Güncelle</button>
+        <button id="startDictation" class="btn btn-danger">Sesli Komut</button>
+        <div id="temperatureInfo" class="mt-3">20 °C</div>
+        <div id="output" class="mt-3"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script>
+        let sound = false;
+        let ledState = false;
+        let doorState = false;
+        let temperature = 20; // Celsius
+
+        $('#toggleSoundButton').click(function () {
+            sound = !sound;
+            if (sound) {
+                alert("Ses Açıldı!");
+            } else {
+                alert("Ses Kapatıldı!");
+            }
+            updateSoundButton();
+        });
+
+        function updateSoundButton() {
+            const button = $('#toggleSoundButton');
+            button.text(sound ? 'Sesi Kapat' : 'Sesi Aç');
+            button.toggleClass('btn-success', !sound);
+            if (sound) {
+                var speech = new SpeechSynthesisUtterance("Ses Açılıyor");
+                window.speechSynthesis.speak(speech);
+            }
+        }
+
+        $('#ledButton').click(function () {
+            ledState = !ledState;
+            if (ledState) {
+                alert("Lamba açıldı!");
+            } else {
+                alert("Lamba kapatıldı!");
+            }
+            updateLEDButton();
+        });
+
+        $('#doorButton').click(function () {
+            doorState = !doorState;
+            if (doorState) {
+                alert("Kapı açıldı!");
+            } else {
+                alert("Kapı kapatıldı!");
+            }
+            updateDoorButton();
+        });
+
+        $('#temperatureButton').click(function () {
+            updateTemperature();
+        });
+
+        function updateLEDButton() {
+            const button = $('#ledButton');
+            button.text(ledState ? 'Kapat' : 'Aç');
+            button.toggleClass('btn-success', ledState);
+            if (ledState) {
+                if (sound) {
+                    var speech = new SpeechSynthesisUtterance("Ampul açılıyor");
+                    window.speechSynthesis.speak(speech);
+                }
+            } else {
+                if (sound) {
+                    var speech = new SpeechSynthesisUtterance("Ampul kapatılıyor");
+                    window.speechSynthesis.speak(speech);
+                }
+            }
+        }
+
+        function updateDoorButton() {
+            const button = $('#doorButton');
+            button.text(doorState ? 'Kapat' : 'Aç');
+            button.toggleClass('btn-success', doorState);
+
+            if (doorState) {
+                if (sound) {
+                    var speech = new SpeechSynthesisUtterance("Kapı açılıyor");
+                    window.speechSynthesis.speak(speech);
+                }
+            } else {
+                if (sound) {
+                    var speech = new SpeechSynthesisUtterance("Kapı kapatılıyor");
+                    window.speechSynthesis.speak(speech);
+                }
+            }
+        }
+
+        function updateTemperature() {
+            temperature = Math.floor(Math.random() * 20) + 10;
+            $('#temperatureInfo').text(temperature + ' °C');
+        }
+
+        updateLEDButton();
+        updateDoorButton();
+        updateTemperature();
+        updateSoundButton();
+
+        const startDictation = $('#startDictation');
+        const output = $('#output');
+
+        if ('webkitSpeechRecognition' in window) {
+            const recognition = new webkitSpeechRecognition();
+            let processing = false;
+
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.lang = 'tr-TR';
+
+            recognition.onresult = function (event) {
+                let lastCommand = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        lastCommand = event.results[i][0].transcript;
+                    }
+                }
+                if (lastCommand !== '') {
+                    const command = lastCommand.toLowerCase();
+                    output.html('Son Komut: ' + lastCommand);
+                    if (command.includes('ampul aç') || command.includes('ampulü aç')) {
+                        if (!ledState) {
+                            ledState = true;
+                            updateLEDButton();
+                            alert('Ampul açılıyor...');
+                        } else {
+                            alert('Ampul zaten açık!');
+                        }
+                    } else if (command.includes('ampul kapat') || command.includes('ampulü kapat')) {
+                        if (ledState) {
+                            ledState = false;
+                            updateLEDButton();
+                            alert('Ampul kapatılıyor...');
+                        } else {
+                            alert('Ampul zaten kapalı!');
+                        }
+                    } else if (command.includes('kapı aç') || command.includes('kapıyı aç')) {
+                        if (!doorState) {
+                            doorState = true;
+                            updateDoorButton();
+                            alert('Kapı açılıyor...');
+                        } else {
+                            alert('Kapı zaten açık!');
+                        }
+                    } else if (command.includes('kapı kapat') || command.includes('kapıyı kapat')) {
+                        if (doorState) {
+                            doorState = false;
+                            updateDoorButton();
+                            alert('Kapı kapatılıyor...');
+                        } else {
+                            alert('Kapı zaten kapalı!');
+                        }
+                    } else if (command.includes('ses kapat') || command.includes('sesi kapat')) {
+                        if (sound) {
+                            sound = false;
+                            updateSoundButton();
+                            alert('Ses Kapatılıyor...');
+                        } else {
+                            alert('Ses zaten Kapalı!');
+                        }
+                    } else if (command.includes('ses aç') || command.includes('sesi aç')) {
+                        if (!sound) {
+                            sound = true;
+                            updateSoundButton();
+                            alert('Ses Açılıyor...');
+                        } else {
+                            alert('Ses zaten Açık!');
+                        }
+                    } else {
+                        alert('Anlaşılamayan komut: ' + command);
+                    }
+                    processing = false;
+                }
+            };
+
+            recognition.onerror = function (event) {
+                output.html('Hata: ' + event.error);
+            };
+
+            startDictation.click(function () {
+                if (!processing) {
+                    startCountdown();
+                }
+            });
+
+            recognition.onend = function () {
+                output.html('');
+                recognition.stop();
+            };
+
+            function startCountdown() {
+                let countdown = 5;
+                const interval = setInterval(() => {
+                    output.html(`<div class="alert alert-danger" role="alert">${countdown}...</div>`);
+                    countdown--;
+                    if (countdown < 0) {
+                        clearInterval(interval);
+                        recognition.start();
+                        output.html('<div class="alert alert-danger" role="alert">Dinleniyor...</div>');
+                        processing = true;
+                        setTimeout(() => {
+                            recognition.stop();
+                            output.html('<div class="alert alert-info" role="alert">Dinleme süresi doldu.</div>');
+                            processing = false;
+                        }, 5000);
+                    }
+                }, 1000);
+            }
+        } else {
+            output.html('Üzgünüz, tarayıcınız Web Speech API\'yi desteklemiyor.');
+        }
+    </script>
+</body>
+
+</html>

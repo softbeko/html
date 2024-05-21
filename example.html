@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Başlık Sayfası</title>
+</head>
+
+<body>
+    <h1>Bu bir başlık</h1>
+    <button id="button">off</button>
+    <button id="button2">on</button>
+    <script>
+        const DEBUG=true;
+        const URL= DEBUG? "88.246.12.233":"192.168.1.50"
+        document.addEventListener("DOMContentLoaded", function (event) {
+            document.getElementById("button").addEventListener("click", () => {
+                fetch(
+                    `http://${URL}/32/off`
+                )
+            })
+            document.getElementById("button").addEventListener("click", () => {
+                fetch(
+                    "http://192.168.1.50/32/on"
+                )
+            })
+        });
+    </script>
+</body>
+
+</html>

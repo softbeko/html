@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="tr">
+    <title>Akıllı Ev Admin Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+</head>
+<style>
+    body {
+        background-color: #f8f9fa;
+        padding-top: 50px;
+    }
+
+    .card {
+        text-align: center;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+
+    .btn {
+        width: 100%;
+    }
+</style>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">MİO GÜVENLİK SİSTEMLERİ</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+                aria-labelledby="offcanvasDarkNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">MİO GÜVENLİK SİSTEMLERİ</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Anasayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/hakkimizda.html">Hakkımızda </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <h1 class="text-center mt-5 mb-4">Akıllı Ev Admin Paneli</h1>
+        <div class="row" style="   max-width: 1051px;
+        margin: 33px auto;
+        padding: 36px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Salon Ampulü</h5>
+                        <button id="ledButton" class="btn btn-primary">Aç/Kapat</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Dış Kapısı</h5>
+                        <button id="doorButton" class="btn btn-primary">Aç/Kapat</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Sesli Komut</h5>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Sesli Komut için tıklayın
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Isı Bilgisi</h5>
+                        <p id="temperatureInfo">-</p>
+                        <button id="temperatureButton" class="btn btn-primary">Güncelle</button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button id="toggleSoundButton" class="btn btn-primary">Sesi Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Sesli Komuta Hoşgeldiniz</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ol class="list-group list-group-numbered">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">AMPUL AÇ</div>
+                                Evdeki ampulü açar
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">KAPI AÇ</div>
+                                Evdeki Kapıyı Açar
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Ses AÇ</div>
+                                Uygulamadaki Sesi açar
+                            </div>
+                        </li>
+                    </ol>
+                    <div id="output"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="startDictation" type="button" class="btn btn-primary">SESLİ KOMUTU BAŞLAT</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Simulated data
+        let sound = false;
+        let ledState = false;
+        let doorState = false;
+        let temperature = 20; // Celsius
+
+        $('#toggleSoundButton').click(function () {
+            sound = !sound;
+            // Simulate sending command to turn on/off LED
+            if (sound) {
+                // Simulated success message
+                alert("Ses Açıldı!");
+            } else {
+                // Simulated success message
+                alert("Ses Kapatıldı!");
+            }
+            updateSoundButton();
+        });
+
+        function updateSoundButton() {
+            const button = $('#toggleSoundButton');
+            button.text(sound ? 'Sesi Kapat' : 'Sesi Aç');
+            button.toggleClass('btn-success', !sound);
+            if (sound) {
+                var speech = new SpeechSynthesisUtterance("Ses Açılıyor");
+                window.speechSynthesis.speak(speech);
+            }
+        }
+
+        // LED button click event 
+        $('#ledButton').click(function () {
+            ledState = !ledState;
+            // Simulate sending command to turn on/off LED
+            if (ledState) {
+                // Simulated success message
+                alert("Lamba açıldı!");
+            } else {
+                // Simulated success message
+                alert("Lamba kapatıldı!");
+            }
+            updateLEDButton();
+        });
+
+        // Door button click event
+        $('#doorButton').click(function () {
+            doorState = !doorState;
+            // Simulate sending command to open/close door
+            if (doorState) {
+                // Simulated success message
+                alert("Kapı açıldı!");
+            } else {
+                // Simulated success message
+                alert("Kapı kapatıldı!");
+            }
+            updateDoorButton();
+        });
+
+        // Temperature button click event
+        $('#temperatureButton').click(function () {
+            updateTemperature();
+        });
+
+        // Function to update LED button text and color
+        function updateLEDButton() {
+            const button = $('#ledButton');
+            button.text(ledState ? 'Kapat' : 'Aç');
+            button.toggleClass('btn-success', ledState);
+            if (ledState) {
+                if (sound) {
+                    var speech = new SpeechSynthesisUtterance("Ampul açılıyor");
+                    window.speechSynthesis.speak(speech);
+                }
+            } else {
+                if (sound) {
+                    var speech = new SpeechSynthesisUtterance("Ampul kapatılıyor");
+                    window.speechSynthesis.speak(speech);
+                }
+            }
+        }
+
+        // Function to update Door button text and color
+        function updateDoorButton() {
+            const button = $('#doorButton');
+            button.text(doorState ? 'Kapat' : 'Aç');
+            button.toggleClass('btn-success', doorState);
+            if (doorState) {
+                if (sound) {
+                    var speech = new SpeechSynthesisUtterance("Kapı açılıyor");
+                    window.speechSynthesis.speak(speech);
+                }
+            } else {
+                if (sound) {
+                    var speech = new SpeechSynthesisUtterance("Kapı kapatılıyor");
+                    window.speechSynthesis.speak(speech);
+                }
+            }
+        }
+
+        // Function to update temperature info
+        function updateTemperature() {
+            // Simulate temperature change
+            temperature = Math.floor(Math.random() * 20) + 10; // Random temperature between 10 and 30 Celsius
+            $('#temperatureInfo').text(temperature + ' °C');
+        }
+
+        // Initialize button states
+        updateLEDButton();
+        updateDoorButton();
+        updateTemperature();
+        updateSoundButton();
+
+        // localStorage'daki kullanıcı adı ve şifreyi kontrol et
+        const storedUsername = localStorage.getItem('username');
+        const storedPassword = localStorage.getItem('password');
+
+        // Basit kontrol (gerçek uygulamalarda daha güvenli bir yöntem kullanın)
+        if (storedUsername !== 'admin' || storedPassword !== 'admin') {
+            // Kullanıcı adı veya şifre doğru değilse, giriş sayfasına yönlendir
+            window.location.href = '/index.html';
+        }
+
+        const startDictation = $('#startDictation');
+        const output = $('#output');
+
+        // Web Speech API destekleniyorsa
+        if ('webkitSpeechRecognition' in window) {
+            const recognition = new webkitSpeechRecognition();
+            let processing = false; // Komut işleme durumu
+
+            recognition.continuous = false; // Tek seferlik tanıma yapacak
+            recognition.interimResults = true;
+            recognition.lang = 'tr-TR'; // Tanıma dilini Türkçe olarak ayarlayın
+
+            recognition.onresult = function (event) {
+                let lastCommand = ''; // Son komutu tutacak değişken
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        lastCommand = event.results[i][0].transcript; // Son komutu güncelle
+                    }
+                }
+                if (lastCommand !== '') {
+                    // Son komut alındığında işlemleri gerçekleştir
+                    const command = lastCommand.toLowerCase();
+                    output.html('Son Komut: ' + lastCommand);
+                    if (command.includes('ampul aç') || command.includes('ampulü aç')) {
+                        if (!ledState) {
+                            ledState = true;
+                            updateLEDButton();
+                            alert('Ampul açılıyor...');
+                            // Burada gerçek cihaz kontrolü yapılabilir
+                        } else {
+                            alert('Ampul zaten açık!');
+                        }
+                    } else if (command.includes('ampul kapat') || command.includes('ampulü kapat')) {
+                        if (ledState) {
+                            ledState = false;
+                            updateLEDButton();
+                            alert('Ampul kapatılıyor...');
+                            // Burada gerçek cihaz kontrolü yapılabilir
+                        } else {
+                            alert('Ampul zaten kapalı!');
+                        }
+                    } else if (command.includes('kapı aç') || command.includes('kapıyı aç')) {
+                        if (!doorState) {
+                            doorState = true;
+                            updateDoorButton();
+                            alert('Kapı açılıyor...');
+                            // Burada gerçek cihaz kontrolü yapılabilir
+                        } else {
+                            alert('Kapı zaten açık!');
+                        }
+                    } else if (command.includes('kapı kapat') || command.includes('kapıyı kapat')) {
+                        if (doorState) {
+                            doorState = false;
+                            updateDoorButton();
+                            alert('Kapı kapatılıyor...');
+                            // Burada gerçek cihaz kontrolü yapılabilir
+                        } else {
+                            alert('Kapı zaten kapalı!');
+                        }
+                    }
+                    else if (command.includes('ses kapat') || command.includes('sesi kapat')) {
+                        if (sound) {
+                            sound = false;
+                            updateSoundButton();
+                            alert('Ses Kapatılıyor...');
+                            // Burada gerçek cihaz kontrolü yapılabilir
+                        } else {
+                            alert('Ses zaten Kapalı!');
+                        }
+                    }
+                    else if (command.includes('ses aç') || command.includes('sesi aç')) {
+                        if (!sound) {
+                            sound = true;
+                            updateSoundButton();
+                            alert('Ses Açılıyor...');
+                            // Burada gerçek cihaz kontrolü yapılabilir
+                        } else {
+                            alert('Ses zaten Açık!');
+                        }
+                    }
+                    else {
+                        alert('Anlaşılamayan komut: ' + command);
+                    }
+                    // İşlem yapıldığında tanıma durumunu güncelle
+                    processing = false;
+                }
+            };
+
+            recognition.onerror = function (event) {
+                output.html('Hata: ' + event.error);
+            };
+
+            startDictation.click(function () {
+                if (!processing) {
+                    recognition.start();
+                    output.html('<div class="alert alert-danger" role="alert">Dinleniyor...</div>'); // Dinleniyor mesajını Bootstrap ikincil uyarı olarak göster
+                    processing = true; // Tanıma başladığında işleme durumunu true yap
+                    setTimeout(function () {
+                        recognition.stop();
+                        output.html(''); // Tanıma bittiğinde mesajı kaldır
+                    }, 5000); // 5 saniye boyunca dinle ve ardından durdur
+                }
+            });
+
+            recognition.onend = function () {
+                processing = false;
+            };
+        } else {
+            output.html('Üzgünüz, tarayıcınız Web Speech API\'yi desteklemiyor.');
+        }
+
+    </script>
+</body>
+
+</html>
